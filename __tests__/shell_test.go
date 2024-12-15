@@ -21,7 +21,6 @@ func TestSSHKeygenCommand(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-
 }
 
 func TestPythonCommand(t *testing.T) {
