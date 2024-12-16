@@ -14,14 +14,19 @@ type ShellArguments struct {
 	Args    []string
 	Timeout time.Duration
 	Input   string
+	Dir     string
 }
 
 // Spawn a command in the background
 // If `arg.Timeout` is not defined or is equal to zero then no timeout will be triggered
 // If `arg.Input` is not defined or has a length of zero then no input will passed to the interactive command
+// If `arg.Dir` is not defined or has a length of zero then the command will be run at the current folder
 func Shell(arg ShellArguments) (bytes.Buffer, bytes.Buffer, int, error) {
 	cmd := exec.Command(arg.Name, arg.Args...)
 	cmd.SysProcAttr = &syscall.SysProcAttr{Setsid: true}
+	if len(arg.Dir) != 0 {
+		cmd.Dir = arg.Dir
+	}
 
 	var stdOutBuffer bytes.Buffer
 	var stdErrBuffer bytes.Buffer
